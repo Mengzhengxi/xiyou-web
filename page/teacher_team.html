@@ -8,6 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta name="renderer" content="webkit">
     <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <link rel="stylesheet" href="../css/style.css"/>
     <!--<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css"/>-->
@@ -131,8 +132,12 @@
         .sq-card .info .more{
             font-size: 7px;
             padding: 5px;
+            color: white;
         }
-
+        .sq-card .info .more p{
+            font-size: 7px;
+            color: white;
+        }
         .mui-row .sq-card{
             padding: 10px;
         }
@@ -160,67 +165,29 @@
     </div>
     <!--下拉刷新容器-->
     <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
-        <div class="mui-scroll">
+        <div class="mui-scroll"id="info">
             <!--数据列表-->
             <ul class="mui-table-view mui-table-view-chevron">
-                <div class="mui-row">
-                    <div class="mui-col-sm-6 mui-col-xs-6">
+                <div class="mui-row"  >
+
+                    <div class="mui-col-sm-6 mui-col-xs-6" v-for="todo in data">
                         <div class="sq-card">
                             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556718275056&di=7c9f2516ce0f341cb28291d46ab129f7&imgtype=0&src=http%3A%2F%2Fimage-258.258.com%2F258com%2F20171111%2Fdd6b7f47fa6e430b5440121fa75e491a.jpg">
-                            <div class="info">
+                            <div class="info" >
                                 <div class="info-name">
-                                    <div class="name"><span class="tag">‘</span>Sophia.Lin</div>
+                                    <div class="name"><span class="tag">‘</span> {{ todo.name }}</div>
                                     <div class="line"></div>
-                                    <span class="titles">SeeU 职业规划师</span>
+                                   <!-- <span class="titles">SeeU 职业规划师</span>-->
                                 </div>
-                                <div class="more">
-                                    <div>介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍介绍介绍介绍</div>
+                                <div class="more" v-html="todo.info">
+
                                 </div>
                             </div>
                             <div class="sq-button" style="margin-top: 10px;width: 60%;margin-right: auto;margin-left: auto">查看详情</div>
                         </div>
                     </div>
-                    <div class="mui-col-sm-6 mui-col-xs-6">
-                        <div class="sq-card">
-                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556718275056&di=7c9f2516ce0f341cb28291d46ab129f7&imgtype=0&src=http%3A%2F%2Fimage-258.258.com%2F258com%2F20171111%2Fdd6b7f47fa6e430b5440121fa75e491a.jpg">
-                            <div class="info">
-                                <div class="info-name">
-                                    <div class="name"><span class="tag">‘</span>Sophia.Lin</div>
-                                    <div class="line"></div>
-                                    <span class="titles">SeeU 职业规划师</span>
-                                </div>
-                                <div class="more">
-                                    <div>介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍介绍介绍介绍</div>
-                                </div>
-                            </div>
-                            <div class="sq-button" style="margin-top: 10px;width: 60%;margin-right: auto;margin-left: auto">查看详情</div>
-                        </div>
-                    </div>
-                    <div class="mui-col-sm-6 mui-col-xs-6">
-                        <div class="sq-card">
-                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556718275056&di=7c9f2516ce0f341cb28291d46ab129f7&imgtype=0&src=http%3A%2F%2Fimage-258.258.com%2F258com%2F20171111%2Fdd6b7f47fa6e430b5440121fa75e491a.jpg">
-                            <div class="info">
-                                <div class="info-name">
-                                    <div class="name"><span class="tag">‘</span>Sophia.Lin</div>
-                                    <div class="line"></div>
-                                    <span class="titles">SeeU 职业规划师</span>
-                                </div>
-                                <div class="more">
-                                    <div>介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍</div>
-                                    <div>介绍介绍介绍介绍介绍介绍介绍介绍</div>
-                                </div>
-                            </div>
-                            <div class="sq-button" style="margin-top: 10px;width: 60%;margin-right: auto;margin-left: auto">查看详情</div>
-                        </div>
-                    </div>
+
+
                 </div>
             </ul>
         </div>
@@ -238,10 +205,65 @@
                 contentover : "释放立即刷新",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
                 contentrefresh : "正在刷新...",//可选，正在刷新状态时，下拉刷新控件上显示的标题内容
                 callback : function () {
+                    app.data=[];
+                    app.getList();
+                    console.info("222");
 
+                   //结束下拉刷新
+                    mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
                 } //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+            },
+            up : {
+                height:50,//可选.默认50.触发上拉加载拖动距离
+                auto:false,//可选,默认false.自动上拉加载一次
+                contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+                contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+                callback :function (){
+                    app.getList();
+                    console.info("11");
+
+                    //结束上拉刷新
+                    mui('#refreshContainer').pullRefresh().endPullupToRefresh();
+                }//必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
             }
         }
     });
+
+
+   var app = new Vue({
+        el: '#info',
+        data: {
+            name: 'haha',
+            info: '<p>PHD CFA<br>20年美国金融领域工作经验<br>菲尔莱狄更斯大学MBA教授<br>CHUBB&SON风险管理部门副总裁</p>',
+            data:[
+
+            ]
+        } ,
+        mounted: function () {
+            // `this` 指向 vm 实例
+            console.info("mounted");
+            this.getList();
+        },
+        methods:{
+            getList: function () {
+                console.info("getList");
+                var a = [
+                    {
+                        "id":1,
+                        "name":"haha",
+                        "info":"<p>PHD CFA<br>20年美国金融领域工作经验<br>菲尔莱狄更斯大学MBA教授<br>CHUBB&SON风险管理部门副总裁</p>"
+                    },
+                    {
+                        "id":2,
+                        "name":"heihei",
+                        "info":"<p>PHD CFA<br>20年美国金融领域工作经验<br>菲尔莱狄更斯大学MBA教授<br>CHUBB&SON风险管理部门副总裁</p>"
+                    }
+                ];
+
+                var b = this.data.concat(a);
+                this.data = b;
+            }
+        }
+    })
 </script>
 </html>
